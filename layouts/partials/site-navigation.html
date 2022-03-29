@@ -1,4 +1,23 @@
 <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-menu {
+      display: none;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+  </style>
   <div class="flex-l justify-between items-center center">
     <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white no-underline white-90 dib">
       {{ with .Site.Params.site_logo }}
@@ -12,11 +31,27 @@
       {{ if .Site.Menus.main }}
         <ul class="pl0 mr3">
           {{ range .Site.Menus.main }}
-          <li class="list f5 f4-ns fw4 dib pr3">
-            <a class="hover-white no-underline white-90" href="{{ .URL }}" title="{{ i18n "pageTitle" . }}">
-              {{ .Name }}
-            </a>
-          </li>
+            {{ if .HasChildren }}
+              <li class="list f5 f4-ns fw4 dib pr3 dropdown pt3 pb3">
+                <a class="hover-blue no-underline white-90">
+                  {{ .Pre }}
+                  <span>{{ .Name }}</span>
+                </a>
+                <ul class="dropdown-menu bg-near-white pa0">
+                  {{ range .Children }}
+                    <li class="list f5 f4-ns fw4 dib pa3">
+                      <a class="hover-blue no-underline black-90" href="{{ .URL }}" title="{{ .Name }} page">{{ .Name }}</a>
+                    </li>
+                  {{ end }}
+                </ul>
+              </li>
+            {{ else }}
+            <li class="list f5 f4-ns fw4 dib pr3">
+              <a class="hover-white no-underline white-90" href="{{ .URL }}" title="{{ .Name }} page">
+                {{ .Name }}
+              </a>
+            </li>
+            {{ end }}          
           {{ end }}
         </ul>
       {{ end }}
